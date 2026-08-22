@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidox - المجتمـع الرسمي للعبة Bidix</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts (Cairo & Tajawal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#10b981',
+                            greenDark: '#059669',
+                            red: '#ef4444',
+                            redDark: '#dc2626',
+                            darkBg: '#090d16',
+                            cardBg: '#111827',
+                            cardBorder: '#1f2937'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'glow-green': '0 0 25px rgba(16, 185, 129, 0.4)',
+                        'glow-red': '0 0 25px rgba(239, 68, 68, 0.4)',
+                        'glow-dual': '0 0 30px rgba(16, 185, 129, 0.2), 0 0 30px rgba(239, 68, 68, 0.2)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #070a12;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981 0%, #ef4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-border-btn {
+            position: relative;
+            background: linear-gradient(#090d16, #090d16) padding-box,
+                        linear-gradient(135deg, #10b981, #ef4444) border-box;
+            border: 2px solid transparent;
+        }
+
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px), radial-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        /* Pulse Animations */
+        @keyframes greenPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.05); }
+        }
+        @keyframes redPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.05); }
+        }
+        .glow-circle-green {
+            animation: greenPulse 6s infinite ease-in-out;
+        }
+        .glow-circle-red {
+            animation: redPulse 7s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased bg-grid-pattern min-h-screen flex flex-col justify-between selection:bg-brand-red selection:text-white">
+
+    <!-- Toast Notification Dynamic Box -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 ease-in-out bg-gray-900 border border-brand-green/50 text-white px-6 py-3 rounded-xl shadow-glow-green flex items-center space-x-3 space-x-reverse">
+        <i class="fa-solid fa-circle-check text-brand-green text-xl"></i>
+        <span id="toast-message" class="text-sm font-semibold">تم نسخ رابط الدعوة بنجاح!</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-40 backdrop-blur-md bg-brand-darkBg/80 border-b border-gray-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-green to-brand-red p-0.5 shadow-glow-dual flex items-center justify-center group">
+                        <div class="w-full h-full bg-brand-darkBg rounded-[14px] flex items-center justify-center group-hover:bg-transparent transition-all duration-300">
+                            <span class="font-tajawal text-2xl font-black text-white group-hover:scale-110 transition-transform">B</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-tajawal text-2xl font-black tracking-wider text-white">BIDOX</span>
+                        <span class="text-[10px] font-bold tracking-widest text-brand-green -mt-1 uppercase">مجتمع لعبة Bidix</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <div class="hidden md:flex items-center space-x-8 space-x-reverse">
+                    <a href="#hero" class="text-gray-300 hover:text-brand-green text-sm font-bold transition-colors">الرئيسية</a>
+                    <a href="#about" class="text-gray-300 hover:text-brand-green text-sm font-bold transition-colors">عن اللعبة والسيرفر</a>
+                    <a href="#features" class="text-gray-300 hover:text-brand-green text-sm font-bold transition-colors">المميزات</a>
+                    <a href="#rules" class="text-gray-300 hover:text-brand-red text-sm font-bold transition-colors">القوانين</a>
+                    <a href="#roles" class="text-gray-300 hover:text-brand-green text-sm font-bold transition-colors">الرتب والجوائز</a>
+                </div>
+
+                <!-- Action Button -->
+                <div class="hidden sm:flex items-center space-x-4 space-x-reverse">
+                    <button onclick="copyInviteLink()" class="p-2.5 rounded-xl bg-gray-800/80 text-gray-300 hover:text-brand-green hover:bg-gray-800 border border-gray-700/50 transition-all" title="نسخ رابط الدعوة">
+                        <i class="fa-regular fa-copy text-lg"></i>
+                    </button>
+                    <a href="https://discord.gg" target="_blank" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-green to-brand-greenDark hover:from-brand-greenDark hover:to-brand-green text-white font-bold text-sm shadow-glow-green hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                        <i class="fa-brands fa-discord text-lg"></i>
+                        <span>انضم للسيرفر</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-cardBg border-b border-gray-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#hero" class="block text-gray-200 hover:text-brand-green font-bold py-2 border-b border-gray-800">الرئيسية</a>
+            <a href="#about" class="block text-gray-200 hover:text-brand-green font-bold py-2 border-b border-gray-800">عن اللعبة والسيرفر</a>
+            <a href="#features" class="block text-gray-200 hover:text-brand-green font-bold py-2 border-b border-gray-800">المميزات</a>
+            <a href="#rules" class="block text-gray-200 hover:text-brand-red font-bold py-2 border-b border-gray-800">القوانين</a>
+            <a href="#roles" class="block text-gray-200 hover:text-brand-green font-bold py-2 border-b border-gray-800">الرتب والجوائز</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <a href="https://discord.gg" target="_blank" class="w-full py-3 text-center rounded-xl bg-gradient-to-r from-brand-green to-brand-greenDark text-white font-bold shadow-glow-green flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-discord text-xl"></i>
+                    <span>انضمام عبر ديسكورد</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative pt-12 pb-20 md:pt-24 md:pb-32 overflow-hidden">
+        <!-- Background Glowing Orbs -->
+        <div class="absolute top-1/4 -right-20 w-96 h-96 bg-brand-green/20 rounded-full filter blur-[100px] pointer-events-none glow-circle-green"></div>
+        <div class="absolute bottom-10 -left-20 w-96 h-96 bg-brand-red/20 rounded-full filter blur-[100px] pointer-events-none glow-circle-red"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Content Left/Right according to RTL -->
+                <div class="lg:col-span-7 text-center lg:text-right space-y-6">
+                    <!-- Badge -->
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-900/90 border border-brand-green/30 text-brand-green text-xs md:text-sm font-bold shadow-inner">
+                        <span class="w-2.5 h-2.5 rounded-full bg-brand-green animate-ping"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-brand-green -mr-5"></span>
+                        <span>السيرفر الرسمي والوحيد لـ Bidix Game</span>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="text-4xl sm:text-6xl font-black text-white leading-tight tracking-tight">
+                        مرحباً بك في عالم <br>
+                        <span class="gradient-text font-tajawal text-5xl sm:text-7xl">BIDOX DISCORD</span>
+                    </h1>
+
+                    <!-- Paragraph -->
+                    <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                        الوجهة الأولى للاعبي لعبة <strong class="text-brand-green font-semibold">Bidix</strong>. انضم إلى آلاف اللاعبين، شارك في البطولات التنافسية، احصل على التحديثات الحصرية، وتواصل مع زملائك في غرف صوتية عالية الجودة!
+                    </p>
+
+                    <!-- Buttons CTA -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="https://discord.gg" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-green via-emerald-600 to-brand-greenDark text-white font-extrabold text-lg shadow-glow-green hover:shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-3 group">
+                            <i class="fa-brands fa-discord text-2xl group-hover:rotate-12 transition-transform"></i>
+                            <span>دخول السيرفر الآن</span>
+                        </a>
+
+                        <a href="#about" class="w-full sm:w-auto px-8 py-4 rounded-xl gradient-border-btn text-white font-bold hover:bg-gray-800/50 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-gamepad text-brand-red"></i>
+                            <span>استكشف اللعبة</span>
+                        </a>
+                    </div>
+
+                    <!-- Live Mini Stats Ticker -->
+                    <div class="pt-8 border-t border-gray-800/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0">
+                        <div class="text-center lg:text-right">
+                            <div class="text-2xl sm:text-3xl font-black text-brand-green font-tajawal" id="stat-online">+1,450</div>
+                            <div class="text-xs text-gray-400 font-semibold mt-1">متواجد الآن <i class="fa-solid fa-circle text-[8px] text-brand-green mr-1"></i></div>
+                        </div>
+                        <div class="text-center lg:text-right border-r border-gray-800 pr-4">
+                            <div class="text-2xl sm:text-3xl font-black text-white font-tajawal" id="stat-total">+15,800</div>
+                            <div class="text-xs text-gray-400 font-semibold mt-1">إجمالي الأعضاء</div>
+                        </div>
+                        <div class="text-center lg:text-right border-r border-gray-800 pr-4">
+                            <div class="text-2xl sm:text-3xl font-black text-brand-red font-tajawal">+50</div>
+                            <div class="text-xs text-gray-400 font-semibold mt-1">بطولة أسبوعياً</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Server Card Showcase -->
+                <div class="lg:col-span-5 relative">
+                    <!-- Glow Behind Card -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-brand-green/30 to-brand-red/30 rounded-3xl filter blur-2xl -z-10 transform scale-95"></div>
+
+                    <!-- Discord Mockup Card -->
+                    <div class="bg-brand-cardBg border border-gray-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+                        <!-- Top Header Image / Banner -->
+                        <div class="h-32 rounded-2xl bg-gradient-to-r from-emerald-950 via-gray-900 to-rose-950 relative overflow-hidden flex items-center justify-between px-6 border border-gray-700/40">
+                            <div class="absolute -right-10 -bottom-10 opacity-20 text-brand-green">
+                                <i class="fa-solid fa-gamepad text-9xl"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-md bg-brand-red/90 text-white text-xs font-black uppercase tracking-wider shadow">Bidix Official</span>
+                            <span class="px-3 py-1 rounded-md bg-brand-green/90 text-white text-xs font-black uppercase tracking-wider shadow">VERIFIED SERVER</span>
+                        </div>
+
+                        <!-- Server Icon & Basic Info -->
+                        <div class="relative px-4 -mt-10 flex items-end justify-between">
+                            <div class="relative">
+                                <div class="w-20 h-20 rounded-2xl bg-gray-900 border-4 border-brand-cardBg p-1 shadow-xl">
+                                    <div class="w-full h-full rounded-xl bg-gradient-to-tr from-brand-green to-brand-red flex items-center justify-center text-white font-black text-3xl font-tajawal shadow-inner">
+                                        BX
+                                    </div>
+                                </div>
+                                <span class="absolute bottom-1 right-1 w-5 h-5 bg-brand-green border-4 border-brand-cardBg rounded-full"></span>
+                            </div>
+                            <button onclick="copyInviteLink()" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-xs text-gray-200 font-bold border border-gray-700 transition">
+                                <i class="fa-solid fa-link ml-1"></i> نسخ الرابط
+                            </button>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="mt-4 px-2 space-y-4">
+                            <div>
+                                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                                    Bidox Community
+                                    <i class="fa-solid fa-circle-check text-brand-green text-sm" title="سيرفر موثق"></i>
+                                </h3>
+                                <p class="text-xs text-gray-400 mt-1">المجتمع العربي الرسمي للعبة Bidix. انضم للقتال والبطولات!</p>
+                            </div>
+
+                            <!-- Channel List Mockup -->
+                            <div class="space-y-1.5 pt-2">
+                                <div class="flex items-center justify-between p-2 rounded-lg bg-gray-900/60 text-xs text-gray-300 border border-gray-800">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-[#] text-brand-green"></i>
+                                        <span class="font-bold">📢-التحديثات-والأخبار</span>
+                                    </div>
+                                    <span class="px-2 py-0.5 rounded bg-brand-green/20 text-brand-green text-[10px]">جديد</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2 rounded-lg bg-gray-900/60 text-xs text-gray-300 border border-gray-800">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-[#] text-brand-red"></i>
+                                        <span class="font-bold">🏆-بطولات-bidix-اليومية</span>
+                                    </div>
+                                    <span class="px-2 py-0.5 rounded bg-brand-red/20 text-brand-red text-[10px]">مباشر</span>
+                                </div>
+                                <div class="flex items-center justify-between p-2 rounded-lg bg-gray-900/60 text-xs text-gray-300 border border-gray-800">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-volume-high text-brand-green"></i>
+                                        <span class="font-bold">🔊-غرفة-اللاعبين-المحترفين</span>
+                                    </div>
+                                    <span class="text-gray-500 text-[10px]">12/20</span>
+                                </div>
+                            </div>
+
+                            <!-- Floating Join Status -->
+                            <div class="p-3 rounded-xl bg-gradient-to-r from-brand-green/10 to-brand-red/10 border border-brand-green/20 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-brand-green/20 flex items-center justify-center text-brand-green">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-bold text-white">حماية كاملة وحظر للغشاشين</div>
+                                        <div class="text-[10px] text-gray-400">نظام حماية متطور لضمان بيئة عادلة</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Bidix Game & Server Section -->
+    <section id="about" class="py-20 bg-brand-darkBg/90 border-y border-gray-800/80 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <h2 class="text-xs font-black tracking-widest text-brand-red uppercase">عن اللعبة والمجتمع</h2>
+                <h3 class="text-3xl sm:text-5xl font-black text-white">ما هي لعبة <span class="text-brand-green">Bidix</span> وكيف يخدمها سيرفر <span class="text-brand-red">Bidox</span>؟</h3>
+                <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                    لعبة Bidix هي تجربة ألعاب تنافسية حماسية تتطلب المهارة والسرعة. تم إنشاء سيرفر Bidox على الديسكورد ليكون المقر الرئيسي والبيت الأول لكل عشاق اللعبة في العالم العربي.
+                </p>
+            </div>
+
+            <!-- 3 Column Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                <!-- Card 1 -->
+                <div class="bg-brand-cardBg border border-gray-800 hover:border-brand-green/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow-green group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-green/10 border border-brand-green/30 flex items-center justify-center text-brand-green text-2xl mb-6 group-hover:bg-brand-green group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">بطولات وتحديات جوائزها قيمة</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        نُنظم في سيرفر Bidox بطولات دورية وأسبوعية للاعبي Bidix مع جوائز مالية، رتب خاصة، ورصيد داخل اللعبة للمائزين الأولين.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-brand-cardBg border border-gray-800 hover:border-brand-red/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow-red group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red/30 flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:bg-brand-red group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">دعم فني مباشر على مدار الساعة</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        هل واجهتك مشكلة تقنية داخل لعبة Bidix؟ فريق الدعم المتواجد في سيرفر Bidox جاهز لمساعدتك عبر تذاكر الدعم (Tickets) فوراً.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-brand-cardBg border border-gray-800 hover:border-brand-green/50 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-glow-green group">
+                    <div class="w-14 h-14 rounded-xl bg-brand-green/10 border border-brand-green/30 flex items-center justify-center text-brand-green text-2xl mb-6 group-hover:bg-brand-green group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-code-branch"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">ربط الحسابات والإحصائيات</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        بوتات مخصصة تتيح لك ربط حسابك في Bidix مع حسابك في ديسكورد لعرض إحصائياتك، مستواك، وترتيبك بين باقي اللاعبين تلقائياً.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Server Features Highlight Section -->
+    <section id="features" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-gray-900 via-brand-cardBg to-gray-900 border border-gray-800 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <div class="inline-block px-3 py-1 rounded-md bg-brand-green/10 border border-brand-green/30 text-brand-green text-xs font-bold">
+                            مميزات حصرية في BIDOX
+                        </div>
+                        <h3 class="text-3xl sm:text-4xl font-black text-white leading-snug">
+                            بيئة ألعاب مُعدة خصيصاً لتمنحك <span class="text-brand-green">أفضل تجربة</span> صوتية وتفاعلية
+                        </h3>
+                        <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                            لم نكتفِ بفتح غرف دردشة عادية، بل قمنا بضبط السيرفر بأعلى التقنيات والبوتات المخصصة ليصبح المكان المثالي لك ولأصدقائك.
+                        </p>
+
+                        <div class="space-y-4 pt-2">
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-brand-green/20 text-brand-green flex items-center justify-center text-xs mt-1 shrink-0">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-white font-bold text-sm">غرف صوتية ذاتية الإنشاء (Temp Voice Channels)</h5>
+                                    <p class="text-gray-400 text-xs">يمكنك إنشاء رومك الخاص والتحكم في عدده واسمه وطرده لأي مزعج بكبسة زر.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-brand-red/20 text-brand-red flex items-center justify-center text-xs mt-1 shrink-0">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-white font-bold text-sm">فعاليات سينمائية وتسلية يومية</h5>
+                                    <p class="text-gray-400 text-xs">فعاليات أسئلة، أفلام، مسابقات تصميم، وألعاب مصغرة أثناء فترات الراحة من Bidix.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-brand-green/20 text-brand-green flex items-center justify-center text-xs mt-1 shrink-0">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-white font-bold text-sm">جودة صوت ببت ريت عالي (384kbps)</h5>
+                                    <p class="text-gray-400 text-xs">تواصل بنقاء صوت عالي جداً وبدون أي تأخير أثناء المباريات التنافسية.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Illustration Visual -->
+                    <div class="relative flex justify-center">
+                        <div class="w-full max-w-md bg-gray-950/80 border border-gray-800 rounded-2xl p-6 space-y-4 shadow-glow-dual">
+                            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-brand-red"></span>
+                                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-brand-green"></span>
+                                </div>
+                                <span class="text-xs text-gray-500 font-mono">#bidox-system-live</span>
+                            </div>
+
+                            <div class="space-y-3 font-mono text-xs">
+                                <div class="p-3 rounded bg-gray-900 border border-gray-800 text-gray-300">
+                                    <span class="text-brand-green font-bold">[BOT]:</span> تم تسجيل دخول اللاعب <span class="text-brand-red">@Ahmad_Bidix</span> للبطولة #42.
+                                </div>
+                                <div class="p-3 rounded bg-gray-900 border border-gray-800 text-gray-300">
+                                    <span class="text-brand-green font-bold">[SYSTEM]:</span> تحديث جديد للعبة Bidix v2.4 متوفر الآن في شات الأخبار!
+                                </div>
+                                <div class="p-3 rounded bg-gray-900 border border-gray-800 text-gray-300">
+                                    <span class="text-brand-red font-bold">[SECURITY]:</span> تم حظر مستخدم حاول مخالفة قوانين اللعب النظيف.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rules Section -->
+    <section id="rules" class="py-20 bg-brand-darkBg/90 border-t border-gray-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <span class="px-3 py-1 rounded-full bg-brand-red/10 text-brand-red border border-brand-red/30 text-xs font-bold">
+                    انضباط واحترام
+                </span>
+                <h3 class="text-3xl sm:text-4xl font-black text-white">قوانين سيرفر <span class="text-brand-red">BIDOX</span></h3>
+                <p class="text-gray-400 text-sm">نرجو من جميع الأعضاء الالتزام بالقواعد لضمان مجتمع آمن وممتع للجميع.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Rule 1 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-red/40 transition">
+                    <div class="absolute top-0 right-0 w-2 h-full bg-brand-red"></div>
+                    <div class="text-3xl font-black text-brand-red/40 font-tajawal mb-2">#01</div>
+                    <h5 class="text-lg font-bold text-white mb-2">الاحترام المتبادل</h5>
+                    <p class="text-gray-400 text-xs leading-relaxed">يمنع منعاً باتاً السب، الشتم، أو التنمر بأي شكل من الأشكال على أي عضو أو إداري.</p>
+                </div>
+
+                <!-- Rule 2 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-green/40 transition">
+                    <div class="absolute top-0 right-0 w-2 h-full bg-brand-green"></div>
+                    <div class="text-3xl font-black text-brand-green/40 font-tajawal mb-2">#02</div>
+                    <h5 class="text-lg font-bold text-white mb-2">منع الإعلانات</h5>
+                    <p class="text-gray-400 text-xs leading-relaxed">يُحظر نشر روابط السيرفرات الأخرى أو الترويج للمنتجات بدون إذن مسبق من الإدارة.</p>
+                </div>
+
+                <!-- Rule 3 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-red/40 transition">
+                    <div class="absolute top-0 right-0 w-2 h-full bg-brand-red"></div>
+                    <div class="text-3xl font-black text-brand-red/40 font-tajawal mb-2">#03</div>
+                    <h5 class="text-lg font-bold text-white mb-2">منع الغش والهاكات</h5>
+                    <p class="text-gray-400 text-xs leading-relaxed">استخدام البرامج الخبيثة في لعبة Bidix يؤدي للباند النهائي المباشر من اللعبة والسيرفر.</p>
+                </div>
+
+                <!-- Rule 4 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-green/40 transition">
+                    <div class="absolute top-0 right-0 w-2 h-full bg-brand-green"></div>
+                    <div class="text-3xl font-black text-brand-green/40 font-tajawal mb-2">#04</div>
+                    <h5 class="text-lg font-bold text-white mb-2">استخدام القنوات المناسبة</h5>
+                    <p class="text-gray-400 text-xs leading-relaxed">يرجى كتابة كل موضوع في القناة (الشات) المخصصة له لعدم إرباك باقي الأعضاء.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roles & Rewards Section -->
+    <section id="roles" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <span class="px-3 py-1 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-xs font-bold">
+                    نظام الرتب والتفاعل
+                </span>
+                <h3 class="text-3xl sm:text-4xl font-black text-white">رتب سيرفر <span class="text-brand-green">Bidox</span> المميزة</h3>
+                <p class="text-gray-400 text-sm">كلما زاد تفاعلك ولعبك في Bidix كلما ارتفعت رتبتك وحصلت على صلاحيات أكبر!</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Role Card 1 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 text-center space-y-3 hover:border-brand-green transition shadow-lg">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-green to-emerald-800 mx-auto flex items-center justify-center text-white text-2xl shadow-glow-green">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <h4 class="text-lg font-black text-brand-green">Bidix Master</h4>
+                    <p class="text-xs text-gray-400">تُمنح لأبطال سيرفر Bidox والفائزين بالبطولات الكبرى للعبة.</p>
+                    <span class="inline-block text-[10px] bg-brand-green/20 text-brand-green px-3 py-1 rounded-full font-bold">صلاحيات خاصة + روم VIP</span>
+                </div>
+
+                <!-- Role Card 2 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 text-center space-y-3 hover:border-brand-red transition shadow-lg">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-red to-rose-900 mx-auto flex items-center justify-center text-white text-2xl shadow-glow-red">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h4 class="text-lg font-black text-brand-red">Server Booster</h4>
+                    <p class="text-xs text-gray-400">تُعطى لكل من يقوم بعمل Booster لسيرفر Bidox لدعم السيرفر.</p>
+                    <span class="inline-block text-[10px] bg-brand-red/20 text-brand-red px-3 py-1 rounded-full font-bold">أيقونة مميزة + تغيير الاسم</span>
+                </div>
+
+                <!-- Role Card 3 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 text-center space-y-3 hover:border-brand-green transition shadow-lg">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-800 mx-auto flex items-center justify-center text-white text-2xl">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h4 class="text-lg font-black text-emerald-400">VIP Player</h4>
+                    <p class="text-xs text-gray-400">تُحصل عليها عبر الوصول لمستوى عالي في الشات والتفاعل اليومي.</p>
+                    <span class="inline-block text-[10px] bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full font-bold">صوت بدقة فائقة</span>
+                </div>
+
+                <!-- Role Card 4 -->
+                <div class="bg-brand-cardBg border border-gray-800 rounded-2xl p-6 text-center space-y-3 hover:border-gray-700 transition shadow-lg">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-700 to-gray-900 mx-auto flex items-center justify-center text-white text-2xl">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h4 class="text-lg font-black text-gray-300">Bidox Member</h4>
+                    <p class="text-xs text-gray-400">الرتبة الأساسية التلقائية لكل عضو جديد ينضم لمجتمعنا.</p>
+                    <span class="inline-block text-[10px] bg-gray-800 text-gray-400 px-3 py-1 rounded-full font-bold">دخول لجميع القنوات العامة</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final Section -->
+    <section class="py-16 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-brand-greenDark via-gray-900 to-brand-redDark rounded-3xl p-10 sm:p-14 text-center border border-gray-700 shadow-2xl relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-full filter blur-xl"></div>
+                <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full filter blur-xl"></div>
+
+                <div class="relative z-10 space-y-6">
+                    <h3 class="text-3xl sm:text-5xl font-black text-white font-tajawal">
+                        ماذا تنتظر؟ مجتمع <span class="text-brand-green">Bidox</span> بانتظارك!
+                    </h3>
+                    <p class="text-gray-200 text-sm sm:text-base max-w-xl mx-auto">
+                        انضم الآن إلى آلاف اللاعبين والشغوفين بلعبة Bidix، ابدأ رحلتك المنافسة، وتكوين صداقات جديدة اليوم.
+                    </p>
+                    <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
+                        <a href="https://discord.gg" target="_blank" class="px-10 py-4 rounded-xl bg-white text-gray-950 font-black text-lg shadow-2xl hover:bg-gray-100 hover:scale-105 transition-all flex items-center justify-center gap-3">
+                            <i class="fa-brands fa-discord text-2xl text-brand-green"></i>
+                            <span>انضم للسيرفر مجاناً</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-darkBg border-t border-gray-800/80 pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-gray-800/80">
+                <!-- Brand Footer -->
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-green to-brand-red p-0.5 flex items-center justify-center">
+                        <div class="w-full h-full bg-brand-darkBg rounded-[10px] flex items-center justify-center text-white font-black font-tajawal">B</div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-tajawal text-xl font-black text-white">BIDOX</span>
+                        <span class="text-[10px] text-gray-400">سيرفر ديسكورد لعبة Bidix الرسمي</span>
+                    </div>
+                </div>
+
+                <!-- Nav Footer Links -->
+                <div class="flex flex-wrap justify-center gap-6 text-sm font-semibold text-gray-400">
+                    <a href="#hero" class="hover:text-brand-green transition">الرئيسية</a>
+                    <a href="#about" class="hover:text-brand-green transition">عن السيرفر</a>
+                    <a href="#features" class="hover:text-brand-green transition">المميزات</a>
+                    <a href="#rules" class="hover:text-brand-red transition">القوانين</a>
+                    <a href="#roles" class="hover:text-brand-green transition">الرتب</a>
+                </div>
+
+                <!-- Social Icons -->
+                <div class="flex items-center space-x-4 space-x-reverse text-gray-400">
+                    <a href="https://discord.gg" target="_blank" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center hover:text-brand-green hover:border-brand-green transition">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center hover:text-brand-red hover:border-brand-red transition">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center hover:text-brand-green hover:border-brand-green transition">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="pt-8 text-center text-xs text-gray-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p>جميع الحقوق محفوظة © 2026 لسيرفر <strong class="text-brand-green">Bidox</strong> ولعبة <strong class="text-brand-red">Bidix</strong>.</p>
+                <p class="text-gray-600">تصميم وتطوير الموقع لمجتمع اللاعبين العربي 🎮</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        // Mobile menu toggle logic
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking menu item
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Copy Discord Server Invite Link Function
+        function copyInviteLink() {
+            const inviteUrl = "https://discord.gg/bidox-bidix";
+            
+            // Clipboard Fallback Strategy
+            const el = document.createElement('textarea');
+            el.value = inviteUrl;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            // Show Toast Notification
+            showToast("تم نسخ رابط سيرفر Bidox بنجاح!");
+        }
+
+        // Custom Toast Handler (replaces alert)
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            
+            toastMsg.innerText = msg;
+            toast.classList.remove('-translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('-translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Live Simulated Counters Animation
+        function animateCounter(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = "+" + current.toLocaleString('en-US');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Trigger counters on window load
+        window.addEventListener('load', () => {
+            animateCounter('stat-online', 1000, 1450, 2000);
+            animateCounter('stat-total', 12000, 15800, 25000);
+        });
+    </script>
+</body>
+</html>
